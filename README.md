@@ -21,6 +21,17 @@ cd privacy-site
 git add index.html && git commit -m "Re-publish the privacy policy" && git push
 ```
 
+## How the live page is checked
+
+Three things hold this page to the app's own policy, so that "published" keeps meaning "the same
+text":
+
+- `test/store/disclosure_test.dart` compares `index.html` against today's rendering whenever this
+directory is checked out beside the app's repository (`flutter test test/store/disclosure_test.dart`);
+- `dart run tool/upload_check.dart` in the app's repository **fetches this address** and compares what is
+  being served against what the app renders today — and refuses an upload while the two differ;
+- the release runbook (`docs/07-RELEASE.md`, step 3) must still name this address, which a test asserts.
+
 ## What is served
 
 One static page: no script, no tracker, no web font, no analytics, no cookies. A page whose subject is
